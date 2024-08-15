@@ -6,7 +6,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: clean-energy
+      POSTGRES_DB: clean_energy
     ports:
       - "5432:5432"
     volumes:
