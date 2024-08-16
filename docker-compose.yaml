@@ -1,21 +1,41 @@
-version: "3.8"
+version: '3.8'
+
 services:
-  db:
-    image: postgres:latest
-    container_name: postgres_db
+  postgres:
+    image: postgres:15
+    container_name: db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: clean_energy
-    ports:
-      - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5454:5432"
     networks:
-      - app-network
+      - app_network
+
+  app:
+    build: .
+    container_name: clean_energy_app
+    environment:
+      DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/clean_energy"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    volumes:
+      - .:/app
+      - /app/node_modules
+    entrypoint: >
+      sh -c "
+      npx prisma migrate deploy && npm start"
+    networks:
+      - app_network
 
 volumes:
-  pgdata:
+  postgres_data:
 
 networks:
-  app-network:
+  app_network:
+    driver: bridge
