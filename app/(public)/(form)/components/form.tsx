@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { leadSchema } from "../schema";
 import { z } from "zod";
 import { Input } from "@/components/ui/input";
-import { NumericFormat } from "react-number-format";
+import { NumericFormat, PatternFormat } from "react-number-format";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -127,10 +127,6 @@ const HomeForm = () => {
   const step = Math.floor(progress / 25);
 
   const handleSubmit = async (values: LeadFormData) => {
-    console.log(step);
-
-    setProgress(step * 23);
-
     return;
     const response = await fetch("/api/leads", {
       method: "POST",
@@ -307,6 +303,77 @@ const HomeForm = () => {
               </>
             )}
 
+            {step === 2 && (
+              <>
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Nome</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="email"
+                  disabled={states.length <= 0 || pendingStates}
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input type="email" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Telefone</FormLabel>
+                      <FormControl>
+                        <PatternFormat
+                          {...field}
+                          format="+55 (##) # ####-####"
+                          displayType="input"
+                          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="cpf"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>CPF</FormLabel>
+                      <FormControl>
+                        <PatternFormat
+                          {...field}
+                          format="###.###.###-##"
+                          displayType="input"
+                          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </>
+            )}
+
             <div className="flex gap-2 self-end">
               {step > 1 && (
                 <Button
@@ -319,7 +386,7 @@ const HomeForm = () => {
                 </Button>
               )}
 
-              {step < 4 ? (
+              {step < 2 ? (
                 <Button
                   type="button"
                   className="self-end"
@@ -328,7 +395,11 @@ const HomeForm = () => {
                   Avançar
                 </Button>
               ) : (
-                <Button type="submit" className="self-end">
+                <Button
+                  type="submit"
+                  className="self-end"
+                  onClick={() => countProgress("next")}
+                >
                   Enviar
                 </Button>
               )}
