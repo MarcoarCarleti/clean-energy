@@ -10,7 +10,7 @@ interface PriateLayoutProps {
 }
 
 export const metadata: Metadata = {
-  title: "Recuperium - Login",
+  title: "Clean Energy - Login",
 };
 
 export default async function PrivateLayout({ children }: PriateLayoutProps) {
