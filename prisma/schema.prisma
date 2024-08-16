@@ -22,6 +22,7 @@ model Lead {
   city      String
   state     String
   energyBill Float
+  supplyType String
   createdAt DateTime @default(now())
 }
 
