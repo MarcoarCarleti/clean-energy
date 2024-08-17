@@ -21,9 +21,9 @@ planilhas em formato XLSX.
 - **Exclusão de Leads**: Permite que administradores excluam leads desnecessários.
 
 ## Pré-requisitos
-- Node.js 16 ou superior
+- Node.js 18.18 ou superior
 - Docker (opcional, se optar por rodar o projeto em containers)
-- PostgreSQL (opcional, se não usar Docker)
+- PostgreSQL (apenas se não usar o Docker)
 
 ## Login
 
