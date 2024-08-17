@@ -5,7 +5,7 @@ const Apresentation = () => {
     <div className="flex flex-col w-full h-screen">
       <div className="flex flex-col items-center justify-center w-full h-screen">
         <div className="text-start max-lg:mt-16 text-xl flex flex-col max-lg:items-center gap-2 text-muted-foreground">
-          <span>Conheça a </span>
+          <span>Conheça o </span>
           <h1 className="text-9xl max-lg:text-7xl  max-sm:text-4xl font-bold max-lg:text-center text-foreground">
             Clean Energy
           </h1>
