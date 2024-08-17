@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export const Header = () => {
   return (
-    <div className="flex h-20 z-10 bg-foreground text-background border-b fixed w-screen border-b-zinc-300 justify-between items-center px-8">
+    <div className="flex h-20  z-10 bg-foreground text-background border-b fixed w-screen border-b-zinc-300 justify-between items-center px-8">
       <Link href={"/"}>
         <span className="font-semibold text-3xl">Clean Energy</span>
       </Link>

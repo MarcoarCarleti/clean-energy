@@ -176,7 +176,7 @@ const HomeForm = () => {
 
   return (
     <div className="flex flex-col w-full h-screen items-center justify-start pt-32 gap-8">
-      <h3 className="text-3xl">
+      <h3 className="text-3xl text-center">
         Calcule a sua conta e veja seus possíveis gastos futuros!
       </h3>
 
@@ -204,7 +204,7 @@ const HomeForm = () => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
-            className="space-y-8 w-full flex flex-col"
+            className="space-y-8 w-full flex flex-col pb-12"
           >
             {step < 2 && (
               <>
