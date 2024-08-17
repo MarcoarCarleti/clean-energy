@@ -29,7 +29,7 @@ services:
       - /app/node_modules
     entrypoint: >
       sh -c "
-      npx prisma migrate deploy && npm start"
+      npx prisma migrate deploy && npx prisma db seed && npm start"
     networks:
       - app_network
 
