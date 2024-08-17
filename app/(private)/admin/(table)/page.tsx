@@ -45,8 +45,6 @@ const AdminPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(data);
-
   return (
     <div className="w-full bg-background p-5 text-3xl flex flex-col">
       <div className="text-md">
@@ -59,6 +57,7 @@ const AdminPage = () => {
           setPagination={setPagination}
           tableName="resposta"
           title="Respostas"
+          isAbleToExport
         />
       </div>
     </div>
