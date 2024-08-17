@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import axios from "axios";
 import { useToast } from "./ui/use-toast";
 import LoadingSpinner from "./loading-spinner";
+import ExportDataButton from "./export-data-button";
 
 interface EntityTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -34,49 +35,13 @@ export function EntityTable<TData, TValue>({
   isLoading = false,
   isAbleToExport,
 }: EntityTableProps<TData, TValue>) {
-  const { toast } = useToast();
-
-  const [pending, setIsPending] = useState(false);
-
-  const exportDataToExcel = async () => {
-    setIsPending(true);
-
-    try {
-      const response = await axios.get("/api/leads/export", {
-        responseType: "blob",
-      });
-
-      if (typeof window !== "undefined") {
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement("a");
-
-        link.href = url;
-        link.setAttribute("download", "leads.xlsx");
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }
-    } catch (err) {
-      toast({
-        title: "Erro",
-        description:
-          "Ocorreu um erro ao exportar a tabela, por favor, tente novamente",
-        variant: "destructive",
-      });
-    } finally {
-      setIsPending(false);
-    }
-  };
-
   return (
     <div className="md:container py-10">
       <div className="flex flex-col md:flex-row  justify-between md:items-center mb-8 gap-4">
         <h1 className="text-3xl font-semibold">{title}</h1>
 
         {isAbleToExport && (
-          <Button onClick={exportDataToExcel} className="hover:cursor-pointer">
-            {pending ? <LoadingSpinner /> : <FileSpreadsheetIcon />}
-          </Button>
+          <ExportDataButton />
         )}
       </div>
       <DataTable
