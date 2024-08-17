@@ -13,7 +13,14 @@ export const AdminHeader = () => {
     <div className="flex h-20 bg-foreground z-10 text-background border-b fixed w-screen border-b-zinc-300 justify-between items-center px-8">
       <Link href={"/"} className="flex items-center gap-2">
         <div className="relative w-10 h-10">
-          <Image src={"/logo.png"} alt="logo" fill />
+          <Image
+            src={"/logo.png"}
+            alt="logo"
+            fill
+            style={{
+              objectFit: "cover",
+            }}
+          />
         </div>
         <span className="font-semibold text-3xl">Clean Energy</span>
       </Link>
