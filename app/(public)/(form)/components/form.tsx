@@ -176,11 +176,11 @@ const HomeForm = () => {
   return (
     <div className="flex flex-col w-full h-screen items-center justify-start pt-32 gap-8">
       <h3 className="text-3xl text-center">
-        Calcule a sua conta e veja seus possíveis gastos futuros!
+        Faça uma simulação e veja seus possíveis gastos futuros!
       </h3>
 
       <div className="flex flex-col items-center h-full w-[400px]">
-        <div className="flex relative w-full my-8">
+        <div className="flex relative w-full px-8 my-8">
           <Progress value={progress} className="h-2" />
           {steps.map((step, index) => (
             <div
