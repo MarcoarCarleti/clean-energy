@@ -43,12 +43,12 @@ incluindo o banco de dados PostgreSQL.
 
 1. Clone o repositório:
 ```
- git clone https://github.com/your-repository.git
+ git clone https://github.com/MarcoarCarleti/clean-energy.git
  ```
 
 2. Navegue até o diretório do projeto:
 ```
- cd your-repository
+ cd clean-energy
 ```
 
 3. Inicie os containers Docker:
@@ -63,12 +63,12 @@ incluindo o banco de dados PostgreSQL.
 Caso prefira rodar o projeto sem Docker, siga os passos abaixo:
 1. Clone o repositório:
 ```
- git clone https://github.com/your-repository.git
+ git clone https://github.com/MarcoarCarleti/clean-energy.git
 ```
 
 2. Navegue até o diretório do projeto:
 ```
- cd your-repository
+ cd clean-energy
 ```
 
 3. Instale as dependências:
