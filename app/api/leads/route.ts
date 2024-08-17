@@ -15,7 +15,11 @@ export async function POST(req: Request) {
 
     const checkIfLeadExists = await prismaClient.lead.findFirst({
       where: {
-        cpf: validatedData.cpf,
+        OR: [
+          { cpf: validatedData.cpf },
+          { email: validatedData.email },
+          { phone: validatedData.phone },
+        ],
       },
       orderBy: {
         createdAt: "desc",
