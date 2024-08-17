@@ -20,6 +20,7 @@ services:
     container_name: clean_energy_app
     environment:
       DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/clean_energy"
+      NEXTAUTH_SECRET: "p0bmfAJFAos0922d"
     ports:
       - "3000:3000"
     depends_on:
