@@ -1,10 +1,17 @@
+import { cpf } from "cpf-cnpj-validator";
 import { z } from "zod";
 
 export const leadSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório!"),
   email: z.string().email("Email inválido!"),
   phone: z.string().min(10, "Telefone inválido!"),
-  cpf: z.string().min(11, "CPF inválido!").max(14, "CPF inválido!"),
+  cpf: z
+    .string()
+    .min(14, "CPF inválido!")
+    .max(14, "CPF inválido!")
+    .refine(cpf.isValid, {
+      message: "Por favor digite um CPF válido",
+    }),
   city: z
     .string({ required_error: "Cidade é obrigatória!" })
     .min(2, "Cidade é obrigatória!"),
