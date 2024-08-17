@@ -400,7 +400,7 @@ const HomeForm = () => {
               <div className="flex flex-col gap-4">
                 <div className="space-y-4">
                   <h4 className="text-2xl font-semibold">
-                    Valor sem Economia Estimada
+                    Valor sem o Clean Energy
                   </h4>
                   <div>
                     <p>
@@ -419,7 +419,7 @@ const HomeForm = () => {
                 </div>
                 <div className="space-y-4">
                   <h4 className="text-2xl font-semibold">
-                    Valor com Economia Estimada
+                    Valor com o Clean Energy
                   </h4>
                   <div>
                     <p>
