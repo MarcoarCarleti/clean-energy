@@ -138,7 +138,6 @@ const HomeForm = () => {
         return;
       }
     } catch (err: any) {
-      console.log(err);
       if (err.response.status === 405) {
         toast({
           title: "Erro",

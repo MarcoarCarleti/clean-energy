@@ -61,7 +61,6 @@ export function DataTable<TData, TValue>({
   });
 
   const totalPages = table.getPageCount();
-  console.log(totalPages);
 
   const renderTableContent = () => {
     if (isLoading) {

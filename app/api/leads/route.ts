@@ -18,8 +18,6 @@ export async function POST(req: Request) {
 
     const validatedData = leadSchema.parse(body);
 
-    console.log(validatedData);
-
     const lead = await prismaClient.lead.create({
       data: validatedData,
     });
