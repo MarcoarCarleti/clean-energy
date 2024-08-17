@@ -12,11 +12,45 @@ export async function POST(req: Request) {
     const session = await getServerSession(authOptions);
 
     if (!session)
-      return NextResponse.json({ message: "Unauthorized", status: 401 });
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
 
     const body = await req.json();
 
     const validatedData = leadSchema.parse(body);
+
+    const checkIfLeadExists = await prismaClient.lead.findFirst({
+      where: {
+        cpf: validatedData.cpf,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    if (checkIfLeadExists) {
+      const diffInMilliseconds =
+        new Date().getTime() - checkIfLeadExists.createdAt.getTime();
+      const diffInMinutes = Math.floor(diffInMilliseconds / 1000 / 60);
+      const diffInSeconds = Math.floor((diffInMilliseconds / 1000) % 60);
+
+      console.log(diffInMinutes);
+
+      if (diffInMinutes < 2) {
+        const timeRemaining = 2 * 60 - (diffInMinutes * 60 + diffInSeconds);
+        const minutesRemaining = Math.floor(timeRemaining / 60);
+        const secondsRemaining = timeRemaining % 60;
+
+        return NextResponse.json(
+          {
+            error: "Please wait to submit this form again.",
+            time: `Aguarde ${minutesRemaining}:${
+              secondsRemaining < 10 ? "0" : ""
+            }${secondsRemaining} segundos para você enviar o formulário novamente.`,
+          },
+          { status: 400 }
+        );
+      }
+    }
 
     const lead = await prismaClient.lead.create({
       data: validatedData,
@@ -42,7 +76,7 @@ export async function GET() {
     const session = await getServerSession(authOptions);
 
     if (!session)
-      return NextResponse.json({ message: "Unauthorized", status: 401 });
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
 
     const leads = await prismaClient.lead.findMany({
       where: {
@@ -65,7 +99,7 @@ export async function DELETE(req: Request) {
     const session = await getServerSession(authOptions);
 
     if (!session)
-      return NextResponse.json({ message: "Unauthorized", status: 401 });
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
 
     const { leadId } = await req.json();
 

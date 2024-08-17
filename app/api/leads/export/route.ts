@@ -22,7 +22,7 @@ export async function GET() {
     const session = await getServerSession(authOptions);
 
     if (!session)
-      return NextResponse.json({ message: "Unauthorized", status: 401 });
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401});
 
     const leads = await prismaClient.lead.findMany({
       where: { isExcluded: false },
@@ -64,10 +64,9 @@ export async function GET() {
         "Content-Disposition": 'attachment; filename="leads.xlsx"',
       },
     });
-  } catch (error) {
-    console.error("Erro ao exportar leads:", error);
+  } catch (error: any) {
     return new NextResponse(
-      JSON.stringify({ error: "Erro ao exportar leads" }),
+      JSON.stringify({ error: error.message }),
       { status: 500 }
     );
   }

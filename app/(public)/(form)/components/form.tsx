@@ -40,6 +40,13 @@ const HomeForm = () => {
   const [pendingStates, startStatesTransition] = useTransition();
   const [pendingCities, startCitiesTransition] = useTransition();
 
+  const { toast } = useToast();
+
+  const steps = [1, 2, 3];
+
+  const step = Math.floor(progress / 25);
+
+
   useEffect(() => {
     const fetchStates = () => {
       startStatesTransition(async () => {
@@ -70,28 +77,6 @@ const HomeForm = () => {
     },
   });
 
-  const stateUfChanges = form.watch("state");
-
-  useEffect(() => {
-    const handleUfSelectChange = async () => {
-      startCitiesTransition(async () => {
-        const stateUf = form.getValues("state");
-        if (stateUf) {
-          try {
-            const response = await axios.get(`/api/states/${stateUf}/cities`);
-            setCities(response.data);
-            form.setValue("city", "");
-          } catch (error) {
-            console.error("Failed to fetch cities:", error);
-          }
-        }
-      });
-    };
-
-    handleUfSelectChange();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stateUfChanges]);
-
   const calculateSavings = (energyBill: number) => {
     const discount = 0.25;
     const monthlySavings = energyBill - energyBill * discount;
@@ -118,11 +103,28 @@ const HomeForm = () => {
     [energyBill]
   );
 
-  const { toast } = useToast();
 
-  const steps = [1, 2, 3];
+  const stateUfChanges = form.watch("state");
 
-  const step = Math.floor(progress / 25);
+  useEffect(() => {
+    const handleUfSelectChange = async () => {
+      startCitiesTransition(async () => {
+        const stateUf = form.getValues("state");
+        if (stateUf) {
+          try {
+            const response = await axios.get(`/api/states/${stateUf}/cities`);
+            setCities(response.data);
+            form.setValue("city", "");
+          } catch (error) {
+            console.error("Failed to fetch cities:", error);
+          }
+        }
+      });
+    };
+
+    handleUfSelectChange();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stateUfChanges]);
 
   const handleSubmit = async (values: LeadFormData) => {
     try {
@@ -138,10 +140,10 @@ const HomeForm = () => {
         return;
       }
     } catch (err: any) {
-      if (err.response.status === 405) {
+      if (err.response.data.error === "Please wait to submit this form again.") {
         toast({
           title: "Erro",
-          description: "Você já preencheu este formulário.",
+          description: err.response.data.time,
           variant: "destructive",
         });
         return;
