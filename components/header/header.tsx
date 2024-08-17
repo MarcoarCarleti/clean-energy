@@ -15,15 +15,14 @@ export const Header = () => {
         </div>
         <span className="font-semibold text-3xl">Clean Energy</span>
       </Link>
-      {status === "authenticated" && (
-        <Button
-          variant={"outline"}
-          className="text-white"
-          onClick={() => signIn()}
-        >
-          {status === "authenticated" ? "Painel Admin" : "Login"}
-        </Button>
-      )}
+
+      <Button
+        variant={"outline"}
+        className="text-white"
+        onClick={() => signIn()}
+      >
+        {status === "authenticated" ? "Painel Admin" : "Login"}
+      </Button>
     </div>
   );
 };
