@@ -37,10 +37,15 @@ interface StatesComboxProps {
   cities: Cities[];
   field: ControllerRenderProps;
   form: UseFormReturn;
-  disabled?: boolean
+  disabled?: boolean;
 }
 
-const CitiesCombobox = ({ field, cities, form, disabled }: StatesComboxProps) => {
+const CitiesCombobox = ({
+  field,
+  cities,
+  form,
+  disabled,
+}: StatesComboxProps) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -54,7 +59,7 @@ const CitiesCombobox = ({ field, cities, form, disabled }: StatesComboxProps) =>
           disabled={disabled}
         >
           {field.value
-            ?  cities.find((city) => city.nome === field.value)?.nome
+            ? cities.find((city) => city.nome === field.value)?.nome
             : "Selecione uma Cidade"}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
