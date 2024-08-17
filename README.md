@@ -29,7 +29,7 @@ planilhas em formato XLSX.
 
 O login padrão da plataforma é:
 - **Email**: admin@admin.com
-- **Senha:**: admin
+- **Senha**: admin
 
 ## Plataforma
 Atualmente, a plataforma está hospedada em: https://clean-energy-sigma.vercel.app/
