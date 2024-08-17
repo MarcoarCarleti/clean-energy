@@ -85,10 +85,16 @@ Caso prefira rodar o projeto sem Docker, siga os passos abaixo:
  npx prisma db seed
 ```
 
-6. Inicie o servidor de desenvolvimento:
+6. Monte o projeto:
 ```
- npm run dev
+ npm run build
 ```
+
+7. Rode o projeto:
+```
+ npm start
+```
+
 7. Acesse o aplicativo no seu navegador em http://localhost:3000.
 
 
