@@ -42,14 +42,12 @@ export function paginate(arr: Array<any>, size: number) {
 }
 
 export const checkIfIsValidBrazilianPhoneNumber = (value: string) => {
-  console.log(value)
   const phone = parsePhoneNumberFromString(value, 'BR');
     
   if (!phone) {
       return false;
   }
 
-  console.log(phone.number.length)
   
   return phone.isValid() && phone.number.length === 14;
 }

@@ -33,8 +33,6 @@ export async function POST(req: Request) {
       const diffInMinutes = Math.floor(diffInMilliseconds / 1000 / 60);
       const diffInSeconds = Math.floor((diffInMilliseconds / 1000) % 60);
 
-      console.log(diffInMinutes);
-
       if (diffInMinutes < 2) {
         const timeRemaining = 2 * 60 - (diffInMinutes * 60 + diffInSeconds);
         const minutesRemaining = Math.floor(timeRemaining / 60);
