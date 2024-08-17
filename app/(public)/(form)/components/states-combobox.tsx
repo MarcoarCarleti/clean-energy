@@ -59,9 +59,7 @@ const StatesCombobox = ({
           disabled={disabled}
         >
           {field.value
-            ? `${
-                states.find((state) => state.sigla === field.value)?.sigla
-              } - ${states.find((state) => state.sigla === field.value)?.nome}`
+            ? `${states.find((state) => state.sigla === field.value)?.sigla}`
             : "Selecione um Estado"}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -92,7 +90,7 @@ const StatesCombobox = ({
                       field.value === state.sigla ? "opacity-100" : "opacity-0"
                     )}
                   />
-                  {state.sigla} - {state.nome}
+                  {state.sigla}
                 </CommandItem>
               ))}
             </CommandGroup>
