@@ -3,9 +3,11 @@
 import {
   ColumnDef,
   PaginationState,
+  SortingState,
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
+  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import {
@@ -40,20 +42,26 @@ export function DataTable<TData, TValue>({
   tableName,
   isLoading,
 }: DataTableProps<TData, TValue>) {
+  const [sorting, setSorting] = useState<SortingState>([]);
+
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onPaginationChange: setPagination,
+    getSortedRowModel: getSortedRowModel(),
+    onSortingChange: setSorting,
     manualPagination: true,
     pageCount,
     state: {
       pagination,
+      sorting,
     },
   });
 
   const totalPages = table.getPageCount();
+  console.log(totalPages);
 
   const renderTableContent = () => {
     if (isLoading) {
