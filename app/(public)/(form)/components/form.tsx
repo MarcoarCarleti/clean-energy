@@ -17,55 +17,25 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Progress } from "@/components/ui/progress";
-import { useEffect, useState, useTransition } from "react";
-import { cn } from "@/lib/utils";
+import { useEffect, useMemo, useState, useTransition } from "react";
+import { cn, formatCurrency, SUPPLY_TYPES } from "@/lib/utils";
 import axios from "axios";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Check, ChevronsUpDown } from "lucide-react";
 import StatesCombobox from "./states-combobox";
 import CitiesCombobox from "./cities-combobox";
+import { useToast } from "@/components/ui/use-toast";
 
 type LeadFormData = z.infer<typeof leadSchema>;
-
-const supplyTypes = [
-  {
-    label: "Monofásico",
-    value: "monofasico",
-  },
-  {
-    label: "Bifásico",
-    value: "bifasico",
-  },
-  {
-    label: "Trifásico",
-    value: "trifasico",
-  },
-];
 
 const HomeForm = () => {
   const [progress, setProgress] = useState(35);
   const [states, setStates] = useState<States[]>([]);
   const [cities, setCities] = useState<Cities[]>([]);
-  const [open, setOpen] = useState(false);
 
   const [pendingStates, startStatesTransition] = useTransition();
   const [pendingCities, startCitiesTransition] = useTransition();
@@ -122,21 +92,67 @@ const HomeForm = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stateUfChanges]);
 
+  const calculateSavings = (energyBill: number) => {
+    const discount = 0.25;
+    const monthlySavings = energyBill - energyBill * discount;
+
+    const savings = {
+      withDiscount: {
+        oneYear: monthlySavings * 12,
+        threeYears: monthlySavings * 12 * 3,
+        fiveYears: monthlySavings * 12 * 5,
+      },
+      withoutDiscount: {
+        oneYear: energyBill * 12,
+        threeYears: energyBill * 12 * 3,
+        fiveYears: energyBill * 12 * 5,
+      },
+    };
+
+    return savings;
+  };
+
+  const energyBill = form.watch("energyBill");
+  const savings = useMemo(
+    () => calculateSavings(energyBill || 0),
+    [energyBill]
+  );
+
+  const { toast } = useToast();
+
   const steps = [1, 2, 3];
 
   const step = Math.floor(progress / 25);
 
   const handleSubmit = async (values: LeadFormData) => {
-    return;
-    const response = await fetch("/api/leads", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values),
-    });
-    if (response.ok) {
-      alert("Lead capturado com sucesso!");
-    } else {
-      alert("Erro ao capturar lead");
+    try {
+      const response = await axios.post("/api/leads", values);
+
+      if (response.status === 200) {
+        countProgress("next");
+        toast({
+          title: "Sucesso",
+          description: "Formulário enviado com sucesso!",
+        });
+
+        return;
+      }
+    } catch (err: any) {
+      console.log(err);
+      if (err.response.status === 405) {
+        toast({
+          title: "Erro",
+          description: "Você já preencheu este formulário.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      toast({
+        title: "Erro",
+        description: "Erro ao enviar o formulário, tente novamente mais tarde.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -280,14 +296,14 @@ const HomeForm = () => {
                           <SelectTrigger>
                             <SelectValue
                               placeholder={
-                                supplyTypes.find(
+                                SUPPLY_TYPES.find(
                                   (type) => type.value === field.value
                                 )?.label || "Selecione um Tipo de Fornecimento"
                               }
                             ></SelectValue>
 
                             <SelectContent>
-                              {supplyTypes.map((type) => (
+                              {SUPPLY_TYPES.map((type) => (
                                 <SelectItem key={type.value} value={type.value}>
                                   {type.label}
                                 </SelectItem>
@@ -374,13 +390,59 @@ const HomeForm = () => {
               </>
             )}
 
+            {step === 4 && (
+              <div className="flex flex-col gap-4">
+                <div className="space-y-4">
+                  <h4 className="text-2xl font-semibold">
+                    Valor sem Economia Estimada
+                  </h4>
+                  <div>
+                    <p>
+                      <strong>Valor em 1 ano: </strong>
+                      {formatCurrency(savings.withoutDiscount.oneYear)}
+                    </p>
+                    <p>
+                      <strong>Valor em 3 anos: </strong>
+                      {formatCurrency(savings.withoutDiscount.threeYears)}
+                    </p>
+                    <p>
+                      <strong>Valor em 5 anos: </strong>
+                      {formatCurrency(savings.withoutDiscount.fiveYears)}
+                    </p>
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  <h4 className="text-2xl font-semibold">
+                    Valor com Economia Estimada
+                  </h4>
+                  <div>
+                    <p>
+                      <strong>Economia em 1 ano: </strong>
+                      {formatCurrency(savings.withDiscount.oneYear)}
+                    </p>
+                    <p>
+                      <strong>Economia em 3 anos: </strong>
+                      {formatCurrency(savings.withDiscount.threeYears)}
+                    </p>
+                    <p>
+                      <strong>Economia em 5 anos: </strong>
+                      {formatCurrency(savings.withDiscount.fiveYears)}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
             <div className="flex gap-2 self-end">
               {step > 1 && (
                 <Button
                   type="button"
                   className="self-end"
                   variant={"outline"}
-                  onClick={() => countProgress("previous")}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    countProgress("previous");
+                  }}
                 >
                   Voltar
                 </Button>
@@ -390,18 +452,19 @@ const HomeForm = () => {
                 <Button
                   type="button"
                   className="self-end"
-                  onClick={() => countProgress("next")}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    countProgress("next");
+                  }}
                 >
                   Avançar
                 </Button>
               ) : (
-                <Button
-                  type="submit"
-                  className="self-end"
-                  onClick={() => countProgress("next")}
-                >
-                  Enviar
-                </Button>
+                step < 4 && (
+                  <Button type="submit" className="self-end">
+                    Enviar
+                  </Button>
+                )
               )}
             </div>
           </form>
