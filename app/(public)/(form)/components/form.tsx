@@ -180,6 +180,12 @@ const HomeForm = () => {
     return setProgress((step + 1) * 25);
   };
 
+  const canGoToNextPage =
+    form.getValues("energyBill")?.toLocaleString().length > 0 &&
+    form.getValues("supplyType").length > 0 &&
+    form.getValues("state").length > 0 &&
+    form.getValues("city").length > 0;
+
   return (
     <div className="flex flex-col w-full h-screen items-center justify-start pt-32 gap-8">
       <h3 className="text-2xl text-center">
@@ -462,6 +468,7 @@ const HomeForm = () => {
                 <Button
                   type="button"
                   className="self-end"
+                  disabled={!canGoToNextPage}
                   onClick={(e) => {
                     e.preventDefault();
                     countProgress("next");
@@ -471,7 +478,11 @@ const HomeForm = () => {
                 </Button>
               ) : (
                 step < 4 && (
-                  <Button type="submit" className="self-end" disabled={pendingForm}>
+                  <Button
+                    type="submit"
+                    className="self-end"
+                    disabled={pendingForm}
+                  >
                     {pendingForm ? <LoadingSpinner /> : "Enviar"}
                   </Button>
                 )
