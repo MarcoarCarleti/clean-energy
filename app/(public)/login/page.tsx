@@ -107,6 +107,10 @@ const Login = () => {
                   <Button className="mt-4" type="submit" disabled={pending}>
                     {pending ? <LoadingSpinner /> : "Fazer Login"}
                   </Button>
+
+                  <span className="w-[250px] mx-auto text-center mt-4 text-muted-foreground">
+                    Não possui um login? Contate-nos e adquira o sistema!
+                  </span>
                 </div>
               </form>
             </div>

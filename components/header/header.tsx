@@ -21,7 +21,7 @@ export const Header = () => {
           className="text-white"
           onClick={() => signIn()}
         >
-          Painel Admin
+          {status === "authenticated" ? "Painel Admin" : "Login"}
         </Button>
       )}
     </div>
