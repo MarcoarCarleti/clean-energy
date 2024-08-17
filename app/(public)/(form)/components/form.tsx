@@ -40,7 +40,7 @@ const HomeForm = () => {
 
   const [pendingStates, startStatesTransition] = useTransition();
   const [pendingCities, startCitiesTransition] = useTransition();
-  const [pendingForm, startFormTransition] = useTransition();
+  const [pendingForm, setFormLoading] = useState(false);
 
   const { toast } = useToast();
 
@@ -126,40 +126,40 @@ const HomeForm = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stateUfChanges]);
 
-  const handleSubmit = (values: LeadFormData) => {
-    startFormTransition(async () => {
-      try {
-        const response = await axios.post("/api/leads", values);
+  const handleSubmit = async (values: LeadFormData) => {
+    setFormLoading(true);
+    try {
+      const response = await axios.post("/api/leads", values);
 
-        if (response.status === 200) {
-          countProgress("next");
-          toast({
-            title: "Sucesso",
-            description: "Formulário enviado com sucesso!",
-          });
+      if (response.status === 200) {
+        countProgress("next");
+        toast({
+          title: "Sucesso",
+          description: "Formulário enviado com sucesso!",
+        });
 
-          return;
-        }
-      } catch (err: any) {
-        if (
-          err.response.data.error === "Please wait to submit this form again."
-        ) {
-          toast({
-            title: "Erro",
-            description: err.response.data.time,
-            variant: "destructive",
-          });
-          return;
-        }
-
+        return;
+      }
+    } catch (err: any) {
+      if (
+        err.response.data.error === "Please wait to submit this form again."
+      ) {
         toast({
           title: "Erro",
-          description:
-            "Erro ao enviar o formulário, tente novamente mais tarde.",
+          description: err.response.data.time,
           variant: "destructive",
         });
+        return;
       }
-    });
+
+      toast({
+        title: "Erro",
+        description: "Erro ao enviar o formulário, tente novamente mais tarde.",
+        variant: "destructive",
+      });
+    } finally {
+      setFormLoading(false);
+    }
   };
 
   const countProgress = (type: "previous" | "next") => {
@@ -346,7 +346,6 @@ const HomeForm = () => {
                 <FormField
                   control={form.control}
                   name="email"
-                  disabled={states.length <= 0 || pendingStates}
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
                       <FormLabel>Email</FormLabel>
