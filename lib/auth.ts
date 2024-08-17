@@ -16,20 +16,20 @@ export const authOptions: NextAuthOptions = {
         type: "credentials",
         credentials: {},
         async authorize(credentials, req) {
-          const { name, password } = credentials as {
-            name: string;
+          const { email, password } = credentials as {
+            email: string;
             password: string;
           };
   
           const user = await prismaClient.user.findFirst({
             where: {
-              name,
+              email,
             },
           });
 
           const isValidPassword = user && await bcrypt.compare(password, user.password)
   
-          if (name !== user?.name || !isValidPassword) {
+          if (email !== user?.email || !isValidPassword) {
             throw new Error("invalid credentials");
           }
   

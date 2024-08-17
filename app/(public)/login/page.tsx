@@ -19,13 +19,13 @@ import { useToast } from "@/components/ui/use-toast";
 import LoadingSpinner from "@/components/loading-spinner";
 
 const Login = () => {
-  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<boolean>(false);
   const [pending, startTransition] = useTransition();
 
   const { toast } = useToast();
-  const router = useRouter()
+  const router = useRouter();
 
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -33,9 +33,9 @@ const Login = () => {
     await startTransition(async () => {
       setError(false);
       const login = await signIn("credentials", {
-        name,
+        email,
         password,
-        redirect: false
+        redirect: false,
       });
 
       if (login?.status !== 200) {
@@ -48,15 +48,14 @@ const Login = () => {
         return;
       }
 
-      router.push('/admin')
-      
+      router.push("/admin");
     });
   };
 
   return (
     <div className="flex w-full h-screen">
       <div className="w-1/2 text-white lg:flex hidden  bg-zinc-900 dark:border-r gap-2" />
-      
+
       <div className="flex lg:w-1/2 w-full flex-row-reverse relative">
         <div className="flex mx-auto content-center flex-wrap">
           <div className="mx-auto flex w-full flex-col lg:space-x-6 sm:w-[350px]">
@@ -76,13 +75,13 @@ const Login = () => {
                     <Input
                       name="email"
                       placeholder="nome@exemplo.com"
-                      value={name}
+                      value={email}
                       onChange={(e) => {
                         if (error) {
                           setError(false);
                         }
 
-                        setName(e.target.value);
+                        setEmail(e.target.value);
                       }}
                       className={cn("", error && "text-red-500")}
                     />
