@@ -29,6 +29,7 @@ import axios from "axios";
 import StatesCombobox from "./states-combobox";
 import CitiesCombobox from "./cities-combobox";
 import { useToast } from "@/components/ui/use-toast";
+import LoadingSpinner from "@/components/loading-spinner";
 
 type LeadFormData = z.infer<typeof leadSchema>;
 
@@ -39,13 +40,13 @@ const HomeForm = () => {
 
   const [pendingStates, startStatesTransition] = useTransition();
   const [pendingCities, startCitiesTransition] = useTransition();
+  const [pendingForm, startFormTransition] = useTransition();
 
   const { toast } = useToast();
 
   const steps = [1, 2, 3];
 
   const step = Math.floor(progress / 25);
-
 
   useEffect(() => {
     const fetchStates = () => {
@@ -103,7 +104,6 @@ const HomeForm = () => {
     [energyBill]
   );
 
-
   const stateUfChanges = form.watch("state");
 
   useEffect(() => {
@@ -126,35 +126,40 @@ const HomeForm = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stateUfChanges]);
 
-  const handleSubmit = async (values: LeadFormData) => {
-    try {
-      const response = await axios.post("/api/leads", values);
+  const handleSubmit = (values: LeadFormData) => {
+    startFormTransition(async () => {
+      try {
+        const response = await axios.post("/api/leads", values);
 
-      if (response.status === 200) {
-        countProgress("next");
-        toast({
-          title: "Sucesso",
-          description: "Formulário enviado com sucesso!",
-        });
+        if (response.status === 200) {
+          countProgress("next");
+          toast({
+            title: "Sucesso",
+            description: "Formulário enviado com sucesso!",
+          });
 
-        return;
-      }
-    } catch (err: any) {
-      if (err.response.data.error === "Please wait to submit this form again.") {
+          return;
+        }
+      } catch (err: any) {
+        if (
+          err.response.data.error === "Please wait to submit this form again."
+        ) {
+          toast({
+            title: "Erro",
+            description: err.response.data.time,
+            variant: "destructive",
+          });
+          return;
+        }
+
         toast({
           title: "Erro",
-          description: err.response.data.time,
+          description:
+            "Erro ao enviar o formulário, tente novamente mais tarde.",
           variant: "destructive",
         });
-        return;
       }
-
-      toast({
-        title: "Erro",
-        description: "Erro ao enviar o formulário, tente novamente mais tarde.",
-        variant: "destructive",
-      });
-    }
+    });
   };
 
   const countProgress = (type: "previous" | "next") => {
@@ -468,7 +473,7 @@ const HomeForm = () => {
               ) : (
                 step < 4 && (
                   <Button type="submit" className="self-end">
-                    Enviar
+                    {pendingForm ? <LoadingSpinner /> : "Enviar"}
                   </Button>
                 )
               )}
