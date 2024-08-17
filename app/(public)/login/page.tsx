@@ -59,7 +59,7 @@ const Login = () => {
       <div className="flex lg:w-1/2 w-full flex-row-reverse relative">
         <div className="flex mx-auto content-center flex-wrap">
           <div className="mx-auto flex w-full flex-col lg:space-x-6 sm:w-[350px]">
-            <div className="flex flex-col space-y-2 text-center pb-8">
+            <div className="flex flex-col space-y-2 text-center pb-8 max-lg:mt-20">
               <h1 className="text-2xl font-semibold tracking-tight">
                 Fazer Login
               </h1>
