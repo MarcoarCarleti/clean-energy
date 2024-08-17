@@ -1,21 +1,21 @@
 "use client";
 
-import { signIn } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 import { Button } from "../ui/button";
 import Link from "next/link";
 
-export const Header = () => {
+export const AdminHeader = () => {
   return (
-    <div className="flex h-20 z-10 bg-foreground text-background border-b fixed w-screen border-b-zinc-300 justify-between items-center px-8">
+    <div className="flex h-20 bg-foreground z-10 text-background border-b fixed w-screen border-b-zinc-300 justify-between items-center px-8">
       <Link href={"/"}>
         <span className="font-semibold text-3xl">Clean Energy</span>
       </Link>
       <Button
         variant={"outline"}
         className="text-white"
-        onClick={() => signIn()}
+        onClick={() => signOut()}
       >
-        Login
+        Sair
       </Button>
     </div>
   );
