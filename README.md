@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Clean Energy Lead Capture Platform
+## Descrição do Projeto
 
-## Getting Started
+Este projeto foi desenvolvido para a Clean Energy, uma empresa líder no mercado de comercialização de energia
+renovável. O objetivo é criar uma plataforma que simule a economia de energia para os usuários e capture os dados de
+leads para posterior contato comercial. A aplicação foi construída utilizando Next.js 14 com TypeScript e PostgreSQL
+como banco de dados relacional. Além disso, foram utilizados Tailwind CSS para estilização e Prisma ORM para a
+manipulação do banco de dados.
+## Funcionalidades
 
-First, run the development server:
+- **Simulação de Economia**: Permite que os usuários insiram seus dados de consumo de energia e visualizem uma
+simulação de economia com base em diferentes períodos (1, 3 e 5 anos).
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Captura de Leads**: Coleta os dados dos usuários interessados em economizar com energia renovável.
+  
+- **Autenticação de Administradores**: Acesso seguro para administradores gerenciarem os leads capturados.
+  
+- **Listagem de Leads**: Exibição e gerenciamento dos leads capturados, com a possibilidade de exportá-los para
+planilhas em formato XLSX.
+
+- **Exclusão de Leads**: Permite que administradores excluam leads desnecessários.
+
+## Pré-requisitos
+- Node.js 16 ou superior
+- Docker (opcional, se optar por rodar o projeto em containers)
+- PostgreSQL (opcional, se não usar Docker)
+
+## Login
+
+O login padrão da plataforma é:
+- **Email**: admin@admin.com
+- **Senha:**: admin
+
+## Plataforma
+Atualmente, a plataforma está hospedada em: https://clean-energy-sigma.vercel.app/
+  
+## Como Rodar o Projeto
+
+### 1. Usando Docker
+
+Este projeto inclui um docker-compose e um Dockerfile que configuram e executam o ambiente completo da aplicação,
+incluindo o banco de dados PostgreSQL.
+
+1. Clone o repositório:
+```
+ git clone https://github.com/your-repository.git
+ ```
+
+2. Navegue até o diretório do projeto:
+```
+ cd your-repository
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Inicie os containers Docker:
+```
+ docker-compose up --build
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+4. Acesse o aplicativo no seu navegador em http://localhost:3000.
+   
+### 2. Sem Docker
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Caso prefira rodar o projeto sem Docker, siga os passos abaixo:
+1. Clone o repositório:
+```
+ git clone https://github.com/your-repository.git
+```
 
-## Learn More
+2. Navegue até o diretório do projeto:
+```
+ cd your-repository
+```
 
-To learn more about Next.js, take a look at the following resources:
+3. Instale as dependências:
+```
+ npm install
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+4. Configure o banco de dados PostgreSQL e as variáveis de ambiente no arquivo .env, seguindo o modelo do arquivo .env.example.
+   
+5. Execute as migrações e gere os arquivos Prisma:
+```
+ npx prisma generate
+ npx prisma migrate deploy
+ npx prisma db seed
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+6. Inicie o servidor de desenvolvimento:
+```
+ npm run dev
+```
+7. Acesse o aplicativo no seu navegador em http://localhost:3000.
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
