@@ -471,7 +471,7 @@ const HomeForm = () => {
                 </Button>
               ) : (
                 step < 4 && (
-                  <Button type="submit" className="self-end">
+                  <Button type="submit" className="self-end" disabled={pendingForm}>
                     {pendingForm ? <LoadingSpinner /> : "Enviar"}
                   </Button>
                 )
