@@ -1,10 +1,16 @@
+import { checkIfIsValidBrazilianPhoneNumber } from "@/lib/utils";
 import { cpf } from "cpf-cnpj-validator";
 import { z } from "zod";
 
 export const leadSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório!"),
   email: z.string().email("Email inválido!"),
-  phone: z.string().min(10, "Telefone inválido!"),
+  phone: z
+    .string()
+    .min(20, "Telefone inválido!")
+    .refine(checkIfIsValidBrazilianPhoneNumber, {
+      message: "Telefone inválido!",
+    }),
   cpf: z
     .string()
     .min(14, "CPF inválido!")

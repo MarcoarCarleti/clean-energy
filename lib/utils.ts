@@ -1,5 +1,7 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { parsePhoneNumberFromString } from 'libphonenumber-js'
+
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -37,4 +39,17 @@ export function paginate(arr: Array<any>, size: number) {
 
     return acc;
   }, []);
+}
+
+export const checkIfIsValidBrazilianPhoneNumber = (value: string) => {
+  console.log(value)
+  const phone = parsePhoneNumberFromString(value, 'BR');
+    
+  if (!phone) {
+      return false;
+  }
+
+  console.log(phone.number.length)
+  
+  return phone.isValid() && phone.number.length === 14;
 }
