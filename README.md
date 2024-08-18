@@ -77,6 +77,8 @@ Caso prefira rodar o projeto sem Docker, siga os passos abaixo:
 ```
 
 4. Configure o banco de dados PostgreSQL e as variáveis de ambiente no arquivo .env, seguindo o modelo do arquivo .env.example.
+
+**IMPORTANTE: A key "NEXTAUTH_SECRET" NÃO precisa ser mudada, o valor dela já está no arquivo .env.example.**
    
 5. Execute as migrações e gere os arquivos Prisma:
 ```
