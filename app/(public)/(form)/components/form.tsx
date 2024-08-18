@@ -181,10 +181,10 @@ const HomeForm = () => {
   };
 
   const canGoToNextPage =
-    form.getValues("energyBill")?.toLocaleString().length > 0 &&
-    form.getValues("supplyType").length > 0 &&
-    form.getValues("state").length > 0 &&
-    form.getValues("city").length > 0;
+    form.getValues("energyBill")?.toLocaleString()?.length > 0 &&
+    form.getValues("supplyType")?.length > 0 &&
+    form.getValues("state")?.length > 0 &&
+    form.getValues("city")?.length > 0;
 
   return (
     <div className="flex flex-col w-full h-screen items-center justify-start pt-32 gap-8">
